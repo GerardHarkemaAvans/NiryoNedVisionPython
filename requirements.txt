@@ -1,1 +1,3 @@
 pyniryo2
+opencv-python
+pillow
