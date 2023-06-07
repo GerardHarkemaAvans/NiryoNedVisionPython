@@ -4,6 +4,9 @@ import cv2
 #import pafy
 import time
 
+#  Run these commands in root of project:
+# git clone https://github.com/ultralytics/yolov5.git
+# pip install -U -r yolov5/requirements.txt
 
 class ObjectDetection:
     """

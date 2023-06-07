@@ -36,7 +36,7 @@ class usbCamera:
                 cv2.waitKey(1)
         self.abort_ready = True
 
-    def stop(self):
+    def end(self):
         #self.x.join()
         self.abort = True;
         while not self.abort_ready:

@@ -6,12 +6,12 @@ class ONE:
 class NED:
     # NED default poses
     OBSERVATION_POSE = PoseObject(
-        x=0.31, y=0.1, z=0.44,
-        roll=-1.986, pitch=1.481, yaw=-1.782
+        x=0.3, y=0.0, z=0.4,
+        roll=-1.57, pitch=1.5, yaw=-1.57
     )
     HOME_POSE = PoseObject(
-        x=0.25, y=-0.10, z=0.4,
-        roll=-1.986, pitch=1.481, yaw=-1.782
+        x=0.25, y=-0.0, z=0.4,
+        roll=0, pitch=0, yaw=0
     )
     RESTING_POSE = PoseObject(
         x=0.091, y=-0.004, z=0.187,
