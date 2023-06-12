@@ -1,21 +1,37 @@
 import time
 
 from pyniryo2 import *
+import cv2
 # import the opencv library
 import keyboard  # load keyboard package
-
+from libraries.vision.markers_detection import *
 from libraries.vision.usbCamera import usbCamera
 import libraries.niryo.NiryoSupport as Niryo
 
 
 # The pose from where the image processing happens
 
+camera = usbCamera(0)
+def takePhoto():
+    image = camera.take_photo()
+    result, crop_image = extract_img_markers(image, workspace_ratio=1.0)
+    if result:
+        cv2.imshow("Crop", crop_image)
+    else:
+        print("Unable to extract image markers")
+
+    result, marker_image = draw_markers(image, workspace_ratio=1.0)
+    if result:
+        cv2.imshow("Marker", marker_image)
+    else:
+        print("Unable to draw image markers")
+    cv2.waitKey(1)
 def main():
-    camera = usbCamera(0)
+
 
     robot = NiryoRobot("10.10.10.10")
     #robot.arm.reset_calibration()
-    #robot.arm.request_new_calibration()
+    robot.arm.request_new_calibration()
     robot.arm.calibrate_auto()
 
     robot.arm.set_learning_mode(False)
@@ -32,7 +48,7 @@ def main():
     robot.arm.move_pose(Niryo.NED.OBSERVATION_POSE)
 
     print("Take photo")
-    camera.take_photo()
+    takePhoto()
 
     print("Disable TCP")
 
@@ -65,11 +81,27 @@ def main():
 
     while True:
         if keyboard.is_pressed("q"):  # returns True if "q" is pressed
+            robot.arm.move_to_home_pose()
+            robot.arm.set_learning_mode(True)
             camera.end();
             robot.end()
-            print("You pressed q")
             time.sleep(0.5)
             break
+        if keyboard.is_pressed("o"):  # returns True if "o" is pressed
+            print("To observation")
+            robot.arm.set_learning_mode(False)
+            robot.arm.move_pose(Niryo.NED.OBSERVATION_POSE)
+            camera.enable_crosshair(True)
+            time.sleep(0.5)
+        if keyboard.is_pressed("r"):  # returns True if "o" is pressed
+            print("To resting pose")
+            robot.arm.move_to_home_pose()
+            robot.arm.set_learning_mode(True)
+            time.sleep(0.5)
+        if keyboard.is_pressed("p"):  # returns True if "o" is pressed
+            print("Take photo")
+            takePhoto()
+            time.sleep(0.5)
 
 
 

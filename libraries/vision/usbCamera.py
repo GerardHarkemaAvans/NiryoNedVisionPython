@@ -26,15 +26,27 @@ class usbCamera:
         self.abort = False
         self.abort_ready = False
 
+        self.display_crosshair = False
+
     def thread_func(self):
         while not self.abort:
             time.sleep(0.1)
             self.ret, self.orig_frame = self.vid.read()
+            self.orig_frame = cv2.rotate(self.orig_frame, cv2.ROTATE_180)
+            self.frame = self.adjust_image(self.orig_frame)
             if self.display_stream:
-                self.frame = self.adjust_image(self.orig_frame)
+                if self.display_crosshair:
+                    height = self.frame.shape[0]
+                    width = self.frame.shape[1]
+                    cv2.line(self.frame, (int(width/2), 0), (int(width/2), height-1), (0, 255, 0), 1)
+                    cv2.line(self.frame, (0, int(height/2)), (width-1, int(height/2)), (0, 255, 0), 1)
                 cv2.imshow(self.stream_frame_name, self.frame)
                 cv2.waitKey(1)
+
         self.abort_ready = True
+
+    def enable_crosshair(self, enable):
+        self.display_crosshair = enable
 
     def end(self):
         #self.x.join()
