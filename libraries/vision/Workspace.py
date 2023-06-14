@@ -16,7 +16,7 @@ class Workspace:
         self.UpperRightPose = PoseObject(x=1000.0, y=-1000.0, z=0.1, roll=0, pitch=0, yaw=0) # 2
         self.LowerRightPose = PoseObject(x=1000.0, y=500.0, z=0.1, roll=0, pitch=0, yaw=0) # 3
         self.LowerLeftPose = PoseObject(x=-1000.0, y=500.0, z=0.1, roll=0, pitch=0, yaw=0) # 4
-        self.calculate_parameters();
+        #self.calculate_parameters();
 
     def calculate_parameters(self):
         self.orgin_x = self.UpperLeftPose.x
@@ -24,14 +24,19 @@ class Workspace:
         a = self.UpperRightPose.x - self.UpperLeftPose.x
         b = self.UpperRightPose.y - self.UpperLeftPose.y
         self.width = math.sqrt((math.pow(a, 2) + math.pow(b, 2)))
+        print(a)
+        print(b)
         self.yaw = math.asin(a/self.width)
+        print("Width: ")
         print(self.width)
-        print(self.yaw)
+        print("Yaw (graden): ")
+        print(np.rad2deg(self.yaw))
 
         a = self.LowerLeftPose.x - self.UpperLeftPose.x
         b = self.LowerLeftPose.y - self.UpperLeftPose.y
 
         self.height = math.sqrt((math.pow(a, 2) + math.pow(b, 2)))
+        print("Height: ")
         print(self.height)
         self.abs_z_ws = (self.UpperRightPose.z + self.UpperLeftPose.z + self.LowerRightPose.z + self.LowerLeftPose.z) / 4
 
@@ -99,94 +104,83 @@ class Workspace:
             return False
         return True
 
-    '''
-    def get_pose(self, x_rel, y_rel, yaw_rel, yaw_center=None):
-        # simple way, better to implement matrixes
+    if 1:
+        def get_pose(self, x_rel, y_rel, yaw_rel, yaw_center=None):
+            # simple way, better to implement vectors
 
-        pose = PoseObject(x=-1000.0, y=-1000.0, z=0.1, roll=0, pitch=0, yaw=0)
+            pose = PoseObject(x=0, y=0, z=0, roll=0, pitch=0, yaw=0)
 
-        # x-direction
-        rel_x_ws = self.width * x_rel
-        abs_x_ws = self.UpperRightPose.x + rel_x_ws
-        pose.x = abs_x_ws
+            # x-direction
+            rel_x_ws = self.width * x_rel
+            abs_x_ws = self.UpperLeftPose.x + rel_x_ws
+            pose.x = abs_x_ws
 
-        # y-direction
-        rel_y_ws = self.height * y_rel
-        abs_y_ws = self.UpperRightPose.x + rel_y_ws
-        pose.y = abs_y_ws
+            # y-direction
+            rel_y_ws = self.height * y_rel
+            abs_y_ws = self.UpperLeftPose.y + rel_y_ws
+            pose.y = abs_y_ws
 
-        # x-direction
-        pose.z = self.abs_z_ws
+            # x-direction
+            pose.z = self.abs_z_ws
 
-        # yaw-orientation
-        pose.yaw = self.yaw + yaw_rel
+            # yaw-orientation
+            pose.yaw = self.yaw + yaw_rel
 
-        return pose
-    '''
-    def get_pose(self, x_rel, y_rel, yaw_rel, yaw_center=None):
-        """
-        Transform the pose in the workspace to the world pose
+            return pose
+    else:
 
-        :param workspace: dict of the workspace which contains name, matrix, ratio
-        :param x_rel: object base x position relative to workspace
-        :param y_rel: object base y position relative to workspace
-        :param yaw_rel: object base rotation on z relative to workspace
-        :param yaw_center: Avoid over rotation
-        """
+        def get_pose(self, x_rel, y_rel, yaw_rel, yaw_center=None):
+            """
+            !!! Not tested yet !!!!
 
-        position_matrix = np.empty(shape=[0, 3])
+            Transform the pose in the workspace to the world pose
 
-        position = self.UpperLeftPose
-        position_matrix = np.append(position_matrix, [[position.x, position.y, position.z]], axis=0)
+            :param workspace: dict of the workspace which contains name, matrix, ratio
+            :param x_rel: object base x position relative to workspace
+            :param y_rel: object base y position relative to workspace
+            :param yaw_rel: object base rotation on z relative to workspace
+            :param yaw_center: Avoid over rotation
+            """
 
-        position = self.UpperRightPose
-        position_matrix = np.append(position_matrix, [[position.x, position.y, position.z]], axis=0)
+            position_matrix = np.empty(shape=[0, 3])
+            rotation_matrix = np.empty(shape=[0, 4])
 
-        position = self.LowerLeftPose
-        position_matrix = np.append(position_matrix, [[position.x, position.y, position.z]], axis=0)
+            position_list = [self.UpperLeftPose, self.UpperRightPose, self.LowerLeftPose, self.LowerRightPose]
+            for position in position_list:
+                position_matrix = np.append(position_matrix, [[position.x, position.y, position.z]], axis=0)
+                quaternion = quaternion_from_euler(position.roll, position.pitch, position.yaw)
+                rotation_matrix = np.append(rotation_matrix, [[quaternion[0], quaternion[1], quaternion[2], quaternion[3]]],
+                                            axis=0)
 
-        position = self.LowerRightPose
-        position_matrix = np.append(position_matrix, [[position.x, position.y, position.z]], axis=0)
+            print("position_matrix: ")
+            print(position_matrix)
+            print("rotation_matrix: ")
+            print(rotation_matrix)
+            position = np.dot(position_matrix, np.array([x_rel, y_rel, 1]))
+            print("position: ")
+            print(position)
+            camera_rotation = euler_matrix(0, 0, yaw_rel)
+            print("camera_rotation: ")
+            print(camera_rotation)
+            # Here we correct the object orientation to be similar to base_link if
+            # the object in on the ground. Not neccessarily needed to be honest...
+            convention_rotation = np.array([[0, -1, 0, 0],
+                                            [-1, 0, 0, 0],
+                                            [0, 0, -1, 0],
+                                            [0, 0, 0, 1]])
 
-        rotation_matrix = np.empty(shape=[0, 4])
+            object_rotation = concatenate_matrices(
+                rotation_matrix, camera_rotation, convention_rotation)
+            roll, pitch, yaw = euler_from_matrix(object_rotation)
 
-        euler = self.UpperLeftPose
-        quaternion = quaternion_from_euler(euler.roll, euler.pitch, euler.yaw)
-        print(quaternion)
-        rotation_matrix = np.append(rotation_matrix, [[quaternion[0], quaternion[1], quaternion[2], quaternion[3]]], axis=0)
+            # Correcting yaw to avoid out of reach targets
+            if yaw_center is not None:
+                if yaw < yaw_center - np.pi / 2:
+                    yaw += np.pi
+                elif yaw > yaw_center + np.pi / 2:
+                    yaw -= np.pi
 
-        euler = self.UpperRightPose
-        quaternion = quaternion_from_euler(euler.roll, euler.pitch, euler.yaw)
-        rotation_matrix = np.append(rotation_matrix, [[quaternion[0], quaternion[1], quaternion[2], quaternion[3]]], axis=0)
+            q = quaternion_from_euler(roll, pitch, yaw)
 
-        euler = self.LowerLeftPose
-        quaternion = quaternion_from_euler(euler.roll, euler.pitch, euler.yaw)
-        rotation_matrix = np.append(rotation_matrix, [[quaternion[0], quaternion[1], quaternion[2], quaternion[3]]], axis=0)
-
-        euler = self.LowerRightPose
-        quaternion = quaternion_from_euler(euler.roll, euler.pitch, euler.yaw)
-        rotation_matrix = np.append(rotation_matrix, [[quaternion[0], quaternion[1], quaternion[2], quaternion[3]]], axis=0)
-
-        position = np.dot(position_matrix, np.array([x_rel, y_rel, 1]))
-        camera_rotation = euler_matrix(0, 0, yaw_rel)
-        # Here we correct the object orientation to be similar to base_link if
-        # the object in on the ground. Not neccessarily needed to be honest...
-        convention_rotation = np.array([[0, -1, 0, 0],
-                                        [-1, 0, 0, 0],
-                                        [0, 0, -1, 0],
-                                        [0, 0, 0, 1]])
-
-        object_rotation = concatenate_matrices(
-            rotation_matrix, camera_rotation, convention_rotation)
-        roll, pitch, yaw = euler_from_matrix(object_rotation)
-
-        # Correcting yaw to avoid out of reach targets
-        if yaw_center is not None:
-            if yaw < yaw_center - np.pi / 2:
-                yaw += np.pi
-            elif yaw > yaw_center + np.pi / 2:
-                yaw -= np.pi
-
-        q = quaternion_from_euler(roll, pitch, yaw)
-
-        return position, q
+            return position, [roll, pitch, yaw]
+            return position, q
