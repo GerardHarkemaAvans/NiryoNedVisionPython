@@ -7,11 +7,12 @@ import keyboard  # load keyboard package
 from libraries.vision.markers_detection import *
 from libraries.vision.usbCamera import usbCamera
 import libraries.niryo.NiryoSupport as Niryo
+from libraries.vision.enums import *
 
 
 # The pose from where the image processing happens
 
-camera = usbCamera(0)
+camera = usbCamera(CAMERA_INDEX)
 def takePhoto():
     image = camera.take_photo()
     result, crop_image = extract_img_markers(image, workspace_ratio=1.0)
@@ -38,11 +39,11 @@ def main():
 
     #print("Enable TCP")
 
-    #robot.tool.enable_tcp(False)
+    robot.tool.enable_tcp(False)
     #robot.tool.reset_tcp()
 
     print("To home pose")
-    robot.arm.move_pose(Niryo.NED.HOME_POSE)
+    #robot.arm.move_pose(Niryo.NED.HOME_POSE)
 
     print("To observation")
     robot.arm.move_pose(Niryo.NED.OBSERVATION_POSE)

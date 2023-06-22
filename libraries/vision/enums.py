@@ -1,6 +1,9 @@
 #from enum import Enum, unique
 import cv2
 
+
+CAMERA_INDEX = 1
+
 # -- Text Display
 RED = (0, 0, 255)
 PURPLE = (255, 0, 255)

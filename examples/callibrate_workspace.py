@@ -8,8 +8,9 @@ import libraries.niryo.NiryoSupport as Niryo
 import cv2
 import time
 from libraries.vision.Workspace import Workspace
+from libraries.vision.enums import *
 
-camera = usbCamera(0)
+camera = usbCamera(CAMERA_INDEX)
 def takePhoto():
     image = camera.take_photo()
     result, crop_image = extract_img_markers(image, workspace_ratio=1.0)

@@ -9,7 +9,7 @@ from libraries.vision.enums import *
 import time
 
 def main():
-    camera = usbCamera(1)
+    camera = usbCamera(CAMERA_INDEX)
 
     workspace = Workspace()
 

@@ -4,14 +4,14 @@ import keyboard  # load keyboard package
 import time
 from libraries.vision.usbCamera import usbCamera
 from libraries.vision.markers_detection import *
-
+from libraries.vision.enums import *
 
 def main():
-    camera = usbCamera(1)
+    camera = usbCamera(CAMERA_INDEX)
 
     while True:
         if keyboard.is_pressed("q"):  # returns True if "q" is pressed
-            camera.stop();
+            camera.end();
             break
 
         if keyboard.is_pressed("p"):  # returns True if "q" is pressed

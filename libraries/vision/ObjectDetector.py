@@ -76,7 +76,7 @@ class ObjectDetector:
 
         # Generating threshold image with HSV
         im_thresh = self.image_preprocess_with_hsv(im_work, use_s_prime=False)
-        #cv2.imshow("Threshold", im_thresh)
+        cv2.imshow("Threshold", im_thresh)
 
         # Extracting biggest blob from image. This will correspond to the object
         cx, cy, angle, obj_type, obj_color, im_draw = self.extract_biggest_blob(im_thresh)
@@ -86,9 +86,9 @@ class ObjectDetector:
             status = False#CommandStatus.OBJECT_NOT_FOUND
         else:
             x_rel, y_rel = self.relative_pos_from_pixels(cx, cy)
-            # Filling message
-            result_pose.x = x_rel
-            result_pose.y = y_rel
+            # Filling message, swap x, y to match workspace
+            result_pose.x = y_rel
+            result_pose.y = x_rel
             result_pose.yaw = angle
 
             status = True#CommandStatus.SUCCESS
@@ -233,7 +233,7 @@ class ObjectDetector:
             p_init = self._p_init
             if p_init is None:
                 h_im, w_im = im_ret.shape[:2]
-                p_init = (w_im // 2, h_im // 2)
+                p_init = (0,0)#(w_im // 2, h_im // 2)
             cv2.drawContours(im_ret, [best_cnt], 0, PURPLE, thickness_contours)
             cv2.arrowedLine(im_ret, p_init, (cx, cy), BLUE, thickness=self._draw_text_thickness)
 

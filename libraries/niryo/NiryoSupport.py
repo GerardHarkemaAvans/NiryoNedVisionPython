@@ -17,7 +17,7 @@ class NED:
 
     HOME_POSE = PoseObject(
         x=0.25, y=-0.0, z=0.4,
-        roll=0, pitch=0, yaw=0
+        roll=0.0, pitch=0.0, yaw=0.0
     )
     # Tool Centre Point offsets
     FINGER_GRIPPER_TCP_OFFSET = PoseObject(

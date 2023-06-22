@@ -16,32 +16,28 @@ class Workspace:
         self.UpperRightPose = PoseObject(x=1000.0, y=-1000.0, z=0.1, roll=0, pitch=0, yaw=0) # 2
         self.LowerRightPose = PoseObject(x=1000.0, y=500.0, z=0.1, roll=0, pitch=0, yaw=0) # 3
         self.LowerLeftPose = PoseObject(x=-1000.0, y=500.0, z=0.1, roll=0, pitch=0, yaw=0) # 4
+        self.orgin = PoseObject(x=0, y=0, z=0, roll=0, pitch=1.57, yaw=0)
         #self.calculate_parameters();
 
     def calculate_parameters(self):
-        self.orgin_x = self.UpperLeftPose.x
-        self.orgin_y = self.UpperLeftPose.y
+        self.orgin.x = self.UpperLeftPose.x
+        self.orgin.y = self.UpperLeftPose.y
         a = self.UpperRightPose.x - self.UpperLeftPose.x
         b = self.UpperRightPose.y - self.UpperLeftPose.y
         self.width = math.sqrt((math.pow(a, 2) + math.pow(b, 2)))
-        print(a)
-        print(b)
-        self.yaw = math.asin(a/self.width)
-        print("Width: ")
-        print(self.width)
-        print("Yaw (graden): ")
-        print(np.rad2deg(self.yaw))
+        #print(a)
+        #print(b)
+        self.orgin.yaw = math.asin(a/self.width)
+        print("Width: " + str(self.width))
+        print("Yaw (graden): " + str(np.rad2deg(self.orgin.yaw)))
 
         a = self.LowerLeftPose.x - self.UpperLeftPose.x
         b = self.LowerLeftPose.y - self.UpperLeftPose.y
 
         self.height = math.sqrt((math.pow(a, 2) + math.pow(b, 2)))
-        print("Height: ")
-        print(self.height)
-        self.abs_z_ws = (self.UpperRightPose.z + self.UpperLeftPose.z + self.LowerRightPose.z + self.LowerLeftPose.z) / 4
-
-
-        pass
+        print("Height: " + str(self.height))
+        self.orgin.z = (self.UpperRightPose.z + self.UpperLeftPose.z + self.LowerRightPose.z + self.LowerLeftPose.z) / 4
+        print("Orgin: " + str(self.orgin))
 
     def set(self, _upper_left_pose, _upper_right_pose, _lower_right_pose, _lower_left_pose):
         self.LowerRightPose = _lower_right_pose
@@ -111,20 +107,24 @@ class Workspace:
             pose = PoseObject(x=0, y=0, z=0, roll=0, pitch=0, yaw=0)
 
             # x-direction
-            rel_x_ws = self.width * x_rel
-            abs_x_ws = self.UpperLeftPose.x + rel_x_ws
+            rel_x_ws = self.height * x_rel
+            print("rel x: " + str(rel_x_ws))
+            abs_x_ws = self.orgin.x + rel_x_ws
             pose.x = abs_x_ws
 
             # y-direction
-            rel_y_ws = self.height * y_rel
-            abs_y_ws = self.UpperLeftPose.y + rel_y_ws
+            rel_y_ws = self.width * y_rel
+            print("rel y: " + str(rel_y_ws))
+            abs_y_ws = self.orgin.y + rel_y_ws
             pose.y = abs_y_ws
 
             # x-direction
-            pose.z = self.abs_z_ws
+            pose.z = self.orgin.z
+            pose.pitch = self.orgin.pitch
+            pose.roll = self.orgin.roll
 
             # yaw-orientation
-            pose.yaw = self.yaw + yaw_rel
+            pose.yaw = self.orgin.yaw + yaw_rel
 
             return pose
     else:
