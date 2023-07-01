@@ -15,7 +15,7 @@ def main():
 
     workspace = Workspace()
 
-    with open('workspace.json') as inputfile:
+    with open('../workspace.json') as inputfile:
         workspace.from_json(inputfile.read())
 
     robot = NiryoRobot("10.10.10.10")

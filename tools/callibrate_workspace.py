@@ -67,7 +67,7 @@ def main():
     print(pose4)
 
     workspace.set(pose1, pose2, pose3, pose4)
-    with open('workspace.json', 'w') as outfile:
+    with open('../workspace.json', 'w') as outfile:
         outfile.write(workspace.to_json())
     wsp = workspace.to_json()
     print(wsp)
