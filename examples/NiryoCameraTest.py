@@ -27,12 +27,11 @@ def takePhoto():
     else:
         print("Unable to draw image markers")
     cv2.waitKey(1)
+
 def main():
-
-
     robot = NiryoRobot("10.10.10.10")
     #robot.arm.reset_calibration()
-    robot.arm.request_new_calibration()
+    #robot.arm.request_new_calibration()
     robot.arm.calibrate_auto()
 
     robot.arm.set_learning_mode(False)
@@ -43,7 +42,7 @@ def main():
     #robot.tool.reset_tcp()
 
     print("To home pose")
-    #robot.arm.move_pose(Niryo.NED.HOME_POSE)
+    robot.arm.move_pose(Niryo.NED.HOME_POSE)
 
     print("To observation")
     robot.arm.move_pose(Niryo.NED.OBSERVATION_POSE)
@@ -103,9 +102,6 @@ def main():
             print("Take photo")
             takePhoto()
             time.sleep(0.5)
-
-
-
 
 if __name__ == "__main__":
     main()

@@ -17,6 +17,5 @@ def main():
             camera.take_photo();
 
 
-
 if __name__ == "__main__":
     main()

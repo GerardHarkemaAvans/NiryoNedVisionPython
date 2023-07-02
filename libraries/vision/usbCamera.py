@@ -27,6 +27,7 @@ class usbCamera:
         self.abort_ready = False
 
         self.display_crosshair = False
+        time.sleep(0.5) # Wait a while for starting te thread
 
     def thread_func(self):
         while not self.abort:

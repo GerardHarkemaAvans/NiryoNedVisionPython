@@ -72,14 +72,11 @@ def main():
     wsp = workspace.to_json()
     print(wsp)
 
-
     robot.tool.enable_tcp(False)
 
     camera.end();
     robot.end()
     time.sleep(0.5)
-
-
 
 if __name__ == "__main__":
     main()

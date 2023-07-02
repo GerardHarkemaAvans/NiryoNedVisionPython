@@ -1,11 +1,15 @@
 from pyniryo2 import *
+import time
 
-robot = NiryoRobot("10.10.10.10")
+def main():
+    robot = NiryoRobot("10.10.10.10")
 
-#robot.calibrate_auto()
+    pose = robot.arm.get_pose()
 
-pose = robot.get_pose()
+    print(pose)
 
-print(pose)
+    robot.end()
+    time.sleep(1)
 
-robot.close_connection()
+if __name__ == "__main__":
+    main()

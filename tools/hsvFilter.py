@@ -1,6 +1,10 @@
+import time
+
+from libraries.vision.usbCamera import usbCamera
 import cv2
 import sys
 import numpy as np
+from libraries.vision.enums import * # for defining CAMERA_INDEX
 
 def nothing(x):
     pass
@@ -26,7 +30,8 @@ hMin = sMin = vMin = hMax = sMax = vMax = 0
 phMin = psMin = pvMin = phMax = psMax = pvMax = 0
 
 # define a video capture object
-vid = cv2.VideoCapture(0)
+camera = usbCamera(CAMERA_INDEX, False)
+time.sleep(1)
 
 waitTime = 33
 
@@ -34,8 +39,8 @@ while(1):
 
     # Capture the video frame
     # by frame
-    ret, img = vid.read()
-    output = img
+    img = camera.take_photo(False)
+    output = img.copy()
 
     # Display the resulting frame
     cv2.imshow('Input', img)
@@ -86,5 +91,5 @@ while(1):
         break
 
 # After the loop release the cap object
-vid.release()
+camera.end()
 cv2.destroyAllWindows()

@@ -25,19 +25,18 @@ class Workspace:
         a = self.UpperRightPose.x - self.UpperLeftPose.x
         b = self.UpperRightPose.y - self.UpperLeftPose.y
         self.width = math.sqrt((math.pow(a, 2) + math.pow(b, 2)))
-        #print(a)
-        #print(b)
+
         self.orgin.yaw = math.asin(a/self.width)
-        print("Width: " + str(self.width))
-        print("Yaw (graden): " + str(np.rad2deg(self.orgin.yaw)))
+        #print("Width: " + str(self.width))
+        #print("Yaw (graden): " + str(np.rad2deg(self.orgin.yaw)))
 
         a = self.LowerLeftPose.x - self.UpperLeftPose.x
         b = self.LowerLeftPose.y - self.UpperLeftPose.y
 
         self.height = math.sqrt((math.pow(a, 2) + math.pow(b, 2)))
-        print("Height: " + str(self.height))
+        #print("Height: " + str(self.height))
         self.orgin.z = (self.UpperRightPose.z + self.UpperLeftPose.z + self.LowerRightPose.z + self.LowerLeftPose.z) / 4
-        print("Orgin: " + str(self.orgin))
+        #print("Orgin: " + str(self.orgin))
 
     def set(self, _upper_left_pose, _upper_right_pose, _lower_right_pose, _lower_left_pose):
         self.LowerRightPose = _lower_right_pose
