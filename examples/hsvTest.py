@@ -8,7 +8,7 @@ from libraries.vision.enums import *
 
 
 def main():
-    camera = usbCamera(CAMERA_INDEX)
+    camera = usbCamera(0)
 
     while True:
         if keyboard.is_pressed("q"):  # returns True if "q" is pressed
