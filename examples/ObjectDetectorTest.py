@@ -9,19 +9,19 @@ from libraries.vision.enums import *
 import time
 
 def main():
-    camera = usbCamera(CAMERA_INDEX)
+    camera = usbCamera(1)
 
     workspace = Workspace()
 
     while True:
         if keyboard.is_pressed("q"):  # returns True if "q" is pressed
-            camera.stop();
+            camera.end();
             break
 
         if keyboard.is_pressed("p"):  # returns True if "q" is pressed
             image = camera.take_photo()
             detector = ObjectDetector(
-                obj_type=ObjectType.ANY, obj_color=ColorHSVPrime.BLUE,
+                obj_type=ObjectType.ANY, obj_color=ColorHSVPrime.RED,
                 workspace_ratio=1.0,
                 ret_image_bool=True,
             )
@@ -35,8 +35,9 @@ def main():
                     print(obj_type)
                     print(obj_color)
                     cv2.imshow("Result", im_draw)
-                    realword_pose = workspace.get_pose(result_pose.x, result_pose.y, result_pose.yaw)
-                    print(realword_pose)
+                    cv2.waitKey(1)
+                    #realword_pose = workspace.get_pose(result_pose.x, result_pose.y, result_pose.yaw)
+                    #print(realword_pose)
             time.sleep(1)
 
 

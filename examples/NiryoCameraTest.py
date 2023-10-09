@@ -12,7 +12,7 @@ from libraries.vision.enums import *
 
 # The pose from where the image processing happens
 
-camera = usbCamera(CAMERA_INDEX)
+camera = usbCamera(1)
 def takePhoto():
     image = camera.take_photo()
     result, crop_image = extract_img_markers(image, workspace_ratio=1.0)

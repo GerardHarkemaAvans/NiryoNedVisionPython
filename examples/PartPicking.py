@@ -11,7 +11,7 @@ import libraries.niryo.NiryoSupport as Niryo
 
 def main():
 
-    camera = usbCamera(CAMERA_INDEX)
+    camera = usbCamera(1)
 
     workspace = Workspace()
 
