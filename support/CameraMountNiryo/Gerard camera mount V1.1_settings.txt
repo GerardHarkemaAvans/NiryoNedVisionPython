@@ -1,0 +1,33 @@
+Application version: 2.32.0.0
+Estimated print time: 18h 31m
+Material usage: 36.02m (109g)
+Printer: Zortrax M200
+Profile: Last settings
+Support type: Automatic
+Support: 20°
+Material: Z-GLASS
+Nozzle diameter: 0.4 mm
+Layer: 0.14 mm
+Quality: High
+Infill: 40%
+Fan speed: Auto
+Seam: Normal
+Outer contours: 0.00
+Holes: 0.00
+Surface layers Top: 7
+Surface layers Bottom: 4
+Support Lite: No
+Smart bridges: Yes
+Support offset: No
+First layer Density: 100%
+First layer Print speed: 100%
+First layer Flow ratio: 100%
+First layer gap: 0.30 mm
+Raft Enabled: Yes
+Raft layers: 6
+Platform-raft gap: 0.20 mm
+Raft Density: 100%
+Raft Print speed: 100%
+Raft Flow ratio: 100%
+Support Density: 3.00 mm
+Gap XY: 0.54

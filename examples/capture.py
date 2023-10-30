@@ -19,11 +19,12 @@ def main():
             image = camera.take_photo();
 
         if keyboard.is_pressed("s"):  # returns True if "p" is pressed
-            if image != None:
+            if image is not None:
                 save_title = "Save the image as..."
                 file_type = "*.jpg"
                 output_path = easygui.filesavebox(title=save_title, default=file_type)
-                cv2.imwrite(output_path, image)
+                if output_path is not None:
+                    cv2.imwrite(output_path, image)
 
 
 if __name__ == "__main__":
