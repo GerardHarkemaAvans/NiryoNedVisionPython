@@ -9,9 +9,11 @@ import time
 from pyniryo2 import *
 import libraries.niryo.NiryoSupport as Niryo
 
+camera_index = 1
+
 def main():
 
-    camera = usbCamera(1)
+    camera = usbCamera(camera_index, rotate_frame= True)
 
     workspace = Workspace()
 

@@ -6,8 +6,10 @@ from libraries.vision.usbCamera import usbCamera
 from libraries.vision.markers_detection import *
 from libraries.vision.enums import *
 
+camera_index = 1
+
 def main():
-    camera = usbCamera(1)
+    camera = usbCamera(camera_index, rotate_frame= True)
 
     while True:
         if keyboard.is_pressed("q"):  # returns True if "q" is pressed

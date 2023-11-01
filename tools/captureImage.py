@@ -4,9 +4,15 @@ import keyboard  # load keyboard package
 from libraries.vision.usbCamera import usbCamera
 from libraries.vision.enums import *
 import easygui
-
+camera_index = 1
 def main():
-    camera = usbCamera(1)
+
+    print("Commands: ")
+    print(" q --> Quit")
+    print(" p --> Take Photo")
+    print(" s --> Save Image")
+
+    camera = usbCamera(camera_index)
     image = None
 
     while True:
@@ -22,9 +28,9 @@ def main():
             if image is not None:
                 save_title = "Save the image as..."
                 file_type = "*.jpg"
-                output_path = easygui.filesavebox(title=save_title, default=file_type)
-                if output_path is not None:
-                    cv2.imwrite(output_path, image)
+                image_path = easygui.filesavebox(title=save_title, default=file_type)
+                if image_path is not None:
+                    cv2.imwrite(image_path, image)
 
 
 if __name__ == "__main__":

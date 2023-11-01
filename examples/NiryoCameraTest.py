@@ -9,10 +9,10 @@ from libraries.vision.usbCamera import usbCamera
 import libraries.niryo.NiryoSupport as Niryo
 from libraries.vision.enums import *
 
-
+camera_index = 1
 # The pose from where the image processing happens
 
-camera = usbCamera(1)
+camera = usbCamera(camera_index)
 def takePhoto():
     image = camera.take_photo()
     result, crop_image = extract_img_markers(image, workspace_ratio=1.0)

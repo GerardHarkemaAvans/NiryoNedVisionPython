@@ -10,12 +10,13 @@ from PIL import Image as PILImage
 class usbCamera:
     abort = False
 
-    def __init__(self, cameraIndex = 0, display_stream = True, frame_name = "Stream"):
+    def __init__(self, cameraIndex = 0, display_stream = True, frame_name = "Stream", rotate_frame = False):
 
         self.vid = cv2.VideoCapture(cameraIndex)
 
         self.stream_frame_name = frame_name
         self.display_stream = display_stream
+        self.rotate_frame = rotate_frame
 
         self.brightness = 1.0
         self.contrast = 1.0
@@ -33,7 +34,8 @@ class usbCamera:
         while not self.abort:
             time.sleep(0.1)
             self.ret, self.orig_frame = self.vid.read()
-            self.orig_frame = cv2.rotate(self.orig_frame, cv2.ROTATE_180)
+            if self.rotate_frame:
+                self.orig_frame = cv2.rotate(self.orig_frame, cv2.ROTATE_180)
             self.frame = self.adjust_image(self.orig_frame)
             if self.display_stream:
                 if self.display_crosshair:

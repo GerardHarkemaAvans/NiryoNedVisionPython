@@ -8,8 +8,10 @@ from libraries.vision.Workspace import Workspace
 from libraries.vision.enums import *
 import time
 
+camera_index = 1
+
 def main():
-    camera = usbCamera(1)
+    camera = usbCamera(camera_index)
 
     workspace = Workspace()
 
