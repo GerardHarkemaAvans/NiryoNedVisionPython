@@ -6,7 +6,7 @@ class ONE:
 class NED:
     # NED default poses
     OBSERVATION_POSE = PoseObject(
-        x=0.25, y=0.0, z=0.4,
+        x=0.15, y=0.0, z=0.4,
         roll=-1.571, pitch=1.571, yaw=-1.571
     )
 

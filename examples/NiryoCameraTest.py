@@ -9,7 +9,7 @@ from libraries.vision.usbCamera import usbCamera
 import libraries.niryo.NiryoSupport as Niryo
 from libraries.vision.enums import *
 
-camera_index = 1
+camera_index = 0
 # The pose from where the image processing happens
 
 camera = usbCamera(camera_index)

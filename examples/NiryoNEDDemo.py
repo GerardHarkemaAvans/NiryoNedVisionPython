@@ -41,7 +41,7 @@ def main():
     robot.tool.close_gripper(speed=300)
     time.sleep(2)
     print("Open gripper")
-    robot.tool.open_gripper(speed=300)
+
 
     print("Move NiryoNED 0.2 mm down")
     new_pose = home_pose.copy_with_offsets(z_offset=-0.2)

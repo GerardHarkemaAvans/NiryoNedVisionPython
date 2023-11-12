@@ -10,7 +10,9 @@ import time
 from libraries.vision.Workspace import Workspace
 from libraries.vision.enums import *
 
-camera = usbCamera(CAMERA_INDEX)
+camera_index = 0
+
+camera = usbCamera(camera_index, rotate_frame = True)
 def takePhoto():
     image = camera.take_photo()
     result, crop_image = extract_img_markers(image, workspace_ratio=1.0)
@@ -27,8 +29,33 @@ def takePhoto():
 def main():
     workspace = Workspace()
     robot = NiryoRobot("10.10.10.10")
-    #robot.arm.reset_calibration()
-    #robot.arm.request_new_calibration()
+    #robot = NiryoRobot("10.10.10.10")
+    robot.arm.reset_calibration()
+    robot.arm.request_new_calibration()
+
+    while True:
+        print("Select gripper to callibarte")
+        print("1. Vacuum gripper(not supported yet), z-offset = 0.0 mm")
+        print("2. Finger gripper(standard), z-offset = 85 mm")
+        print("3. Adaptive gripper, z-offset = 121.5 mm")
+        ans = input("What would you like to do?")
+        try:
+            select = int(ans)
+        except ValueError:
+            print("Invalid choise")
+            continue
+        if select == 1:
+            offset = Niryo.NED.VACUUM_GRIPPER_TCP_OFFSET
+            #break
+        elif select == 2:
+            offset = Niryo.NED.FINGER_GRIPPER_TCP_OFFSET
+            break
+        elif select == 3:
+            offset = Niryo.NED.ADAPTIVE_GRIPPER_TCP_OFFSET
+            break
+        else:
+            print("Invalid choise")
+
     robot.arm.calibrate_auto()
 
     robot.arm.set_learning_mode(False)
@@ -38,30 +65,30 @@ def main():
 
     takePhoto()
 
-    robot.tool.set_tcp(Niryo.NED.FINGER_GRIPPER_TCP_OFFSET)
+    robot.tool.set_tcp(offset)
     robot.tool.enable_tcp(True)
 
-    cv2.waitKey(0)
+    #cv2.waitKey(0)
 
     robot.arm.move_to_home_pose()
     robot.arm.set_learning_mode(True)
 
-    print("Move to pose 1 and press enter")
+    print("Move niryoNED callibration tool to marker 1 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose1 = robot.arm.get_pose()
     print(pose1)
 
-    print("Move to pose 2 and press enter")
+    print("Move niryoNED callibration tool to marker 2 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose2 = robot.arm.get_pose()
     print(pose2)
 
-    print("Move to pose 3 and press enter")
+    print("Move niryoNED callibration tool to marker 3 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose3 = robot.arm.get_pose()
     print(pose3)
 
-    print("Move to pose 4 and press enter")
+    print("Move niryoNED callibration tool to marker 4 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose4 = robot.arm.get_pose()
     print(pose4)
@@ -73,6 +100,8 @@ def main():
     print(wsp)
 
     robot.tool.enable_tcp(False)
+
+    print("Callibartion done")
 
     camera.end();
     robot.end()

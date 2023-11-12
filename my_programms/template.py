@@ -9,8 +9,10 @@ import time
 from pyniryo2 import *
 import libraries.niryo.NiryoSupport as Niryo
 
+
+camera_index = 0
 def main():
-    camera = usbCamera(CAMERA_INDEX)
+    camera = usbCamera(camera_index)
 
     workspace = Workspace()
 
