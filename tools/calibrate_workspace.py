@@ -34,7 +34,7 @@ def main():
     robot.arm.request_new_calibration()
 
     while True:
-        print("Select gripper to callibarte")
+        print("Select gripper to calibarte")
         print("1. Vacuum gripper(not supported yet), z-offset = 0.0 mm")
         print("2. Finger gripper(standard), z-offset = 85 mm")
         print("3. Adaptive gripper, z-offset = 121.5 mm")
@@ -73,22 +73,22 @@ def main():
     robot.arm.move_to_home_pose()
     robot.arm.set_learning_mode(True)
 
-    print("Move niryoNED callibration tool to marker 1 and press Enter(in stream/marker window)")
+    print("Move niryoNED calibration-tool to marker 1 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose1 = robot.arm.get_pose()
     print(pose1)
 
-    print("Move niryoNED callibration tool to marker 2 and press Enter(in stream/marker window)")
+    print("Move niryoNED calibration-tool to marker 2 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose2 = robot.arm.get_pose()
     print(pose2)
 
-    print("Move niryoNED callibration tool to marker 3 and press Enter(in stream/marker window)")
+    print("Move niryoNED calibration-tool to marker 3 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose3 = robot.arm.get_pose()
     print(pose3)
 
-    print("Move niryoNED callibration tool to marker 4 and press Enter(in stream/marker window)")
+    print("Move niryoNED calibration-tool to marker 4 and press Enter(in stream/marker window)")
     cv2.waitKey(0)
     pose4 = robot.arm.get_pose()
     print(pose4)
