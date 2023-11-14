@@ -49,6 +49,7 @@ def main():
     time.sleep(2)
     print("Move NiryoNED to home position")
     robot.arm.move_pose(home_pose)
+    robot.end()
 
     print("Ready")
 
