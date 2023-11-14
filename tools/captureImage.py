@@ -4,7 +4,7 @@ import keyboard  # load keyboard package
 from libraries.vision.usbCamera import usbCamera
 from libraries.vision.enums import *
 import easygui
-camera_index = 1
+camera_index = 0
 def main():
 
     print("Commands: ")

@@ -12,7 +12,7 @@ from libraries.vision.enums import *
 camera_index = 0
 # The pose from where the image processing happens
 
-camera = usbCamera(camera_index)
+camera = usbCamera(camera_index, rotate_frame= True)
 def takePhoto():
     image = camera.take_photo()
     result, crop_image = extract_img_markers(image, workspace_ratio=1.0)
@@ -29,6 +29,13 @@ def takePhoto():
     cv2.waitKey(1)
 
 def main():
+    print("Commands: ")
+    print(" q --> Quit")
+    print(" o --> Goto to observation-pose")
+    print(" r --> Goto resting-pose")
+    print(" p --> Take Photo")
+    print(" s --> Save Image")
+
     robot = NiryoRobot("10.10.10.10")
     #robot.arm.reset_calibration()
     #robot.arm.request_new_calibration()

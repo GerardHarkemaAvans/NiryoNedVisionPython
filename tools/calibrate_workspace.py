@@ -34,7 +34,7 @@ def main():
     robot.arm.request_new_calibration()
 
     while True:
-        print("Select gripper to calibarte")
+        print("Select gripper to calibrate")
         print("1. Vacuum gripper(not supported yet), z-offset = 0.0 mm")
         print("2. Finger gripper(standard), z-offset = 85 mm")
         print("3. Adaptive gripper, z-offset = 121.5 mm")
